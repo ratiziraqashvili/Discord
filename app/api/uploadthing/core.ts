@@ -1,10 +1,12 @@
+//@ts-ignore
 import { auth } from "@clerk/nextjs"
+//@ts-ignore
 import { createUploadthing, type FileRouter } from "uploadthing/next";
  
 const f = createUploadthing();
 
 const handleAuth = () => {
-    const userId = auth();
+    const { userId } = auth();
     if(!userId) throw new Error("Unauthorized")
     return { userId: userId }
 }
@@ -17,6 +19,7 @@ export const ourFileRouter = {
  messageFile: f([ "image", "pdf" ])
  .middleware(() => handleAuth())
  .onUploadComplete(() => {})
-} satisfies FileRouter;
+}  satisfies FileRouter;
+ 
  
 export type OurFileRouter = typeof ourFileRouter;
