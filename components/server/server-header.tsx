@@ -17,7 +17,7 @@ import {
   Users,
   PlusCircle,
   TrashIcon,
-  Logout
+  LogOut,
   //@ts-ignore
 } from "lucide-react";
 import { useModal } from "@/hooks/use-modal-store";
@@ -28,10 +28,11 @@ interface ServerHeaderProps {
 }
 
 export const ServerHeader = ({ server, role }: ServerHeaderProps) => {
-    const { onOpen } = useModal();
+  const { onOpen } = useModal();
 
   const isAdmin = role === MemberRole.ADMIN;
   const isModerator = isAdmin || role === MemberRole.MODERATOR;
+  const isGuest = role === MemberRole.GUEST;
 
   return (
     <DropdownMenu>
@@ -43,13 +44,16 @@ export const ServerHeader = ({ server, role }: ServerHeaderProps) => {
       </DropdownMenuTrigger>
       <DropdownMenuContent className="w-56 text-xs font-medium text-black dark:text-neutral-400 space-y-[2px]">
         {isModerator && (
-          <DropdownMenuItem className="text-indigo-600 dark:text-indigo-400 px-3 py-2 text-sm cursor-pointer" onClick={() => onOpen("invite", { server })}>
+          <DropdownMenuItem
+            className="text-indigo-600 dark:text-indigo-400 px-3 py-2 text-sm cursor-pointer"
+            onClick={() => onOpen("invite", { server })}
+          >
             Invite People
             <UserPlus className="h-4 w-4 ml-auto" />
           </DropdownMenuItem>
         )}
         {isAdmin && (
-          <DropdownMenuItem className="px-3 py-2 text-sm cursor-pointer">
+          <DropdownMenuItem className="px-3 py-2 text-sm cursor-pointer" onClick={() => onOpen("editServer", { server })}>
             Server Settings
             <Settings className="h-4 w-4 ml-auto" />
           </DropdownMenuItem>
@@ -74,9 +78,9 @@ export const ServerHeader = ({ server, role }: ServerHeaderProps) => {
           </DropdownMenuItem>
         )}
         {!isAdmin && (
-          <DropdownMenuItem className="px-3 py-2 text-sm cursor-pointer">
+          <DropdownMenuItem className="text-rose-500 px-3 py-2 text-sm cursor-pointer">
             Leave Server
-            <Logout className="h-4 w-4 ml-auto" />
+            <LogOut className="h-4 w-4 ml-auto" />
           </DropdownMenuItem>
         )}
       </DropdownMenuContent>
