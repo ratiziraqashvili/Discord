@@ -10,14 +10,30 @@ import {
 //@ts-ignore
 
 import { useModal } from "@/hooks/use-modal-store";
-import { ServerWithMembersWithProfiles } from "@/types";
 import { Key, useState } from "react";
 import { ScrollArea } from "../ui/scroll-area";
 import { UserAvatar } from "../user-avatar";
+
+import {
+  ShieldCheck,
+  MoreVertical,
+  ShieldAlert,
+  ShieldQuestion,
+  Shield,
+  Check //@ts-ignore
+} from "lucide-react";
 //@ts-ignore
-import { ShieldCheck } from "lucide-react";
-//@ts-ignore
-import { ShieldAlert } from "lucide-react";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuPortal,
+  DropdownMenuSeparator,
+  DropdownMenuSub,
+  DropdownMenuSubContent,
+  DropdownMenuTrigger,
+  DropdownMenuSubTrigger,
+} from "@/components/ui/dropdown-menu";
 
 const roleIconMap = {
   GUEST: null,
@@ -26,6 +42,8 @@ const roleIconMap = {
 };
 
 type Member = {
+  role: string;
+  profileId: number;
   id: Key;
   profile: {
     imageUrl: string;
@@ -36,7 +54,7 @@ type Member = {
 
 export const MembersModal = () => {
   const { onOpen, isOpen, onClose, type, data } = useModal();
-  const [loadingId, setLoadingId] = useState("")
+  const [loadingId, setLoadingId] = useState("");
 
   const isModalOpen = isOpen && type === "members";
   const { server } = data;
@@ -62,15 +80,37 @@ export const MembersModal = () => {
                   {/*@ts-ignore*/}
                   {roleIconMap[member.role]}
                 </div>
-                <p className="text-xs text-zinc-500">
-                  {member.profile.email}
-                </p>
+                <p className="text-xs text-zinc-500">{member.profile.email}</p>
               </div>
-              {server.profileId !== member.profileId && loadingId !== member.id && (
-                <div>
-                  Actions!
-                </div>
-              )}
+              {server.profileId !== member.profileId &&
+                loadingId !== member.id && (
+                  <div className="ml-auto">
+                    <DropdownMenu>
+                      <DropdownMenuTrigger>
+                        <MoreVertical className="h-4 w-4 text-zinc-500" />
+                      </DropdownMenuTrigger>
+                      <DropdownMenuContent side="left">
+                        <DropdownMenuSub>
+                          <DropdownMenuSubTrigger className="flex items-center">
+                            <ShieldQuestion className="w-4 h-4 mr-2" />
+                            <span>Role</span>
+                          </DropdownMenuSubTrigger>
+                          <DropdownMenuPortal>
+                            <DropdownMenuSubContent>
+                              <DropdownMenuItem>
+                                <Shield className="h-4 w-4 mr-2"/>
+                                Guest
+                                {member.role === "GUEST" && (
+                                  <Check className="h-4 w-4 ml-auto" />
+                                )}
+                              </DropdownMenuItem>
+                            </DropdownMenuSubContent>
+                          </DropdownMenuPortal>
+                        </DropdownMenuSub>
+                      </DropdownMenuContent>
+                    </DropdownMenu>
+                  </div>
+                )}
             </div>
           ))}
         </ScrollArea>
