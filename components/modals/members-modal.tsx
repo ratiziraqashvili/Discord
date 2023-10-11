@@ -12,8 +12,6 @@ import { useModal } from "@/hooks/use-modal-store";
 import { Key, useState } from "react";
 import { ScrollArea } from "../ui/scroll-area";
 import { UserAvatar } from "../user-avatar";
-//@ts-ignore
-import axios from "axios";
 
 import {
   ShieldCheck,
@@ -40,8 +38,11 @@ import {
 //@ts-ignore
 import { MemberRole } from "@prisma/client";
 //@ts-ignore
+import axios from "axios";
+//@ts-ignore
 import qs from "query-string";
 import { useRouter } from "@/node_modules/next/navigation";
+import { ServerWithMembersWithProfiles } from "@/types";
 
 const roleIconMap = {
   GUEST: null,
@@ -66,7 +67,28 @@ export const MembersModal = () => {
   const [loadingId, setLoadingId] = useState("");
 
   const isModalOpen = isOpen && type === "members";
-  const { server } = data;
+  const { server } = data as { server: ServerWithMembersWithProfiles };
+
+  const onKick = async (memberId: string) => {
+    try {
+      setLoadingId(memberId);
+      const url = qs.stringifyUrl({
+        url: `/api/members/${memberId}`,
+        query: {
+          serverId: server?.id,
+        },
+      });
+
+      const response = await axios.delete(url);
+
+      router.refresh();
+      onOpen("members", { server: response.data })
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setLoadingId("");
+    }
+  };
 
   const onRoleChange = async (memberId: string, role: MemberRole) => {
     try {
@@ -138,7 +160,9 @@ export const MembersModal = () => {
                                 )}
                               </DropdownMenuItem>
                               <DropdownMenuItem
-                                onClick={() => onRoleChange(member.id, "GUEST")}
+                                onClick={() =>
+                                  onRoleChange(member.id, "MODERATOR")
+                                }
                               >
                                 <ShieldCheck className="h-4 w-4 mr-2" />
                                 Moderator
@@ -150,7 +174,7 @@ export const MembersModal = () => {
                           </DropdownMenuPortal>
                         </DropdownMenuSub>
                         <DropdownMenuSeparator />
-                        <DropdownMenuItem>
+                        <DropdownMenuItem onClick={() => onKick(member.id)}>
                           <Gavel className="h-4 w-4 mr-2" />
                           Kick
                         </DropdownMenuItem>
