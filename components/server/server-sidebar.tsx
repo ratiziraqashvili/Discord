@@ -8,6 +8,9 @@ import { ServerHeader } from "./server-header";
 import { ServerSearch } from "./server-search";
 //@ts-ignore
 import { Hash, Mic, Video, ShieldCheck, ShieldAlert } from "lucide-react";
+import { Separator } from "../ui/separator";
+import { ServerSection } from "./server-section";
+import { ServerChannel } from "./server-channel";
 
 interface ServerSidebarProps {
   serverId: string;
@@ -36,7 +39,9 @@ const iconMap = {
 
 const roleIconMap = {
   [MemberRole.GUEST]: null,
-  [MemberRole.MODERATOR]: <ShieldCheck className="h-4 w-4 mr-2 text-indigo-500" />,
+  [MemberRole.MODERATOR]: (
+    <ShieldCheck className="h-4 w-4 mr-2 text-indigo-500" />
+  ),
   [MemberRole.ADMIN]: <ShieldAlert className="h-4 w-4 mr-2 text-rose-500" />,
 };
 
@@ -81,7 +86,6 @@ export const ServerSidebar = async ({ serverId }: ServerSidebarProps) => {
     (member: Member) => member.profileId !== profile.id
   );
 
-
   if (!server) {
     return redirect("/");
   }
@@ -89,7 +93,6 @@ export const ServerSidebar = async ({ serverId }: ServerSidebarProps) => {
   const role = server.members.find(
     (member: Member) => member.profileId === profile.id
   )?.role;
-
 
   return (
     <div className="flex flex-col h-full text-primary w-full dark:bg-[#2b2d32] bg-[#f2f3f5]">
@@ -137,6 +140,20 @@ export const ServerSidebar = async ({ serverId }: ServerSidebarProps) => {
             ]}
           />
         </div>
+        <Separator className="bg-zinc-200 dark:bg-zinc-700 rounded-md my-2" />
+        {!!textChannels?.length && (
+          <div className="mb-2">
+            <ServerSection
+              sectionType="channels"
+              channelType={ChannelType.TEXT}
+              role={role}
+              label="Text Channels"
+            />
+            {textChannels.map((channel: Channel) => (
+              <ServerChannel key={channel.id} channel={channel} role={role} server={server} />
+            ))}
+          </div>
+        )}
       </ScrollArea>
     </div>
   );
