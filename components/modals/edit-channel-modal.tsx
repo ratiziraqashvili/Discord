@@ -88,7 +88,7 @@ export const EditChannelModal = () => {
           serverId: server?.id,
         },
       });
-      await axios.patch(url, values);
+      await axios.post(url, values);
 
       form.reset();
       router.refresh();
