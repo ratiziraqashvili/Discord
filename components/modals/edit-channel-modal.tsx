@@ -39,7 +39,7 @@ import {
 
 import { Input } from "../ui/input";
 import { Button } from "../ui/button";
-import { useParams, useRouter } from "@/node_modules/next/navigation";
+import { useRouter } from "@/node_modules/next/navigation";
 import { useModal } from "@/hooks/use-modal-store";
 import { useEffect } from "react";
 
@@ -58,37 +58,37 @@ const formSchema = z.object({
 export const EditChannelModal = () => {
   const { isOpen, onClose, type, data } = useModal();
   const router = useRouter();
-  const params = useParams();
 
   const isModalOpen = isOpen && type === "editChannel";
 
-  const { channelType } = data;
+  const { channel, server } = data;
 
   const form = useForm({
     resolver: zodResolver(formSchema),
     defaultValues: {
       name: "",
-      type: channelType ,
+      type: channel?.type || ChannelType.TEXT,
     },
   });
 
   useEffect(() => {
-  if(channelType){
-    form.setValue("type", channelType);
-  }
-  }, [channelType, form]);
+    if(channel){
+      form.setValue("name", channel.name);
+      form.setValue("type", channel.type);
+    }
+  }, [form, channel]);
 
   const isLoading = form.formState.isSubmitting;
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
       const url = qs.stringifyUrl({
-        url: "/api/channels",
+        url: `/api/channels/${channel?.id}`,
         query: {
-          serverId: params?.serverId,
+          serverId: server?.id,
         },
       });
-      await axios.post(url, values);
+      await axios.patch(url, values);
 
       form.reset();
       router.refresh();
@@ -99,7 +99,6 @@ export const EditChannelModal = () => {
   };
 
   const handleClose = () => {
-    form.reset();
     onClose();
   };
 
@@ -108,7 +107,7 @@ export const EditChannelModal = () => {
       <DialogContent className="bg-white text-black p-0 overflow-hidden">
         <DialogHeader className="pt-8 px-6">
           <DialogTitle className="text-2xl text-center font-bold">
-            Create Channel
+            Edit Channel
           </DialogTitle>
         </DialogHeader>
         <Form {...form}>
