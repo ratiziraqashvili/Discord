@@ -1,4 +1,4 @@
-import { request, Server as NetServer } from "http"
+import { Server as NetServer } from "http"
 //@ts-ignore
 import { NextApiRequest } from "next"
 //@ts-ignore
