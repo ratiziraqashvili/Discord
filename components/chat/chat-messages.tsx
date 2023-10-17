@@ -4,14 +4,19 @@ import { useChatQuery } from "@/hooks/use-chat-query";
 import { Member, Message, Profile } from "@prisma/client";
 import { ChatWelcome } from "./chat-welcome";
 //@ts-ignore
-import { Loader2, ServerCrash } from "lucide-react"
+import { Loader2, ServerCrash } from "lucide-react";
 import { Fragment } from "react";
+import { ChatItem } from "./chat-item";
+//@ts-ignore
+import { format } from "date-fns";
+
+const DATE_FORMAT = "d MMM yyyy, HH:mm";
 
 type MessageWithMemberWithProfile = Message & {
   member: Member & {
-    profile: Profile
-  }
-}
+    profile: Profile;
+  };
+};
 
 interface ChatMessagesProps {
   name: string;
@@ -36,28 +41,36 @@ export const ChatMessages = ({
   paramValue,
   type,
 }: ChatMessagesProps) => {
-  const queryKey = `chat:${chatId}`
+  const queryKey = `chat:${chatId}`;
 
-  const { data, fetchNextPage, hasNextPage, isFetchingNextPage, status } = useChatQuery({
-    queryKey, apiUrl, paramKey, paramValue
-  }); 
+  const { data, fetchNextPage, hasNextPage, isFetchingNextPage, status } =
+    useChatQuery({
+      queryKey,
+      apiUrl,
+      paramKey,
+      paramValue,
+    });
 
-  if(status === "loading"){
+  if (status === "loading") {
     return (
       <div className="flex flex-col flex-1 justify-center items-center">
         <Loader2 className="h-7 w-7 text-zinc-500  my-4 animate-spin" />
-        <p className="text-xs text-zinc-500 dark:text-zinc-400">Loading Messages...</p>
+        <p className="text-xs text-zinc-500 dark:text-zinc-400">
+          Loading Messages...
+        </p>
       </div>
-    )
+    );
   }
 
-  if(status === "error"){
+  if (status === "error") {
     return (
       <div className="flex flex-col flex-1 justify-center items-center">
         <ServerCrash className="h-7 w-7 text-zinc-500  my-4" />
-        <p className="text-xs text-zinc-500 dark:text-zinc-400">Something went wrong!</p>
+        <p className="text-xs text-zinc-500 dark:text-zinc-400">
+          Something went wrong!
+        </p>
       </div>
-    )
+    );
   }
 
   return (
@@ -65,15 +78,25 @@ export const ChatMessages = ({
       <div className="flex-1" />
       <ChatWelcome type={type} name={name} />
       <div className="flex flex-col-reverse mt-auto">
-          {data?.pages?.map((group: any, i: any) => (
-            <Fragment key={i}>
-              {group.items.map((message: MessageWithMemberWithProfile) => (
-                <div key={message.id}>
-                  {message.content}
-                </div>
-              ))}
-            </Fragment>
-          ))}
+        {data?.pages?.map((group: any, i: any) => (
+          <Fragment key={i}>
+            {group.items.map((message: MessageWithMemberWithProfile) => (
+              <ChatItem
+                currentMember={member}
+                key={message.id}
+                id={message.id}
+                member={message.member}
+                content={message.content}
+                fileUrl={message.fileUrl}
+                deleted={message.deleted}
+                timestamp={format(new Date(message.createdAt), DATE_FORMAT)}
+                isUpdated={message.updatedAt !== message.createdAt}
+                socketUrl={socketUrl}
+                socketQuery={socketQuery}
+              />
+            ))}
+          </Fragment>
+        ))}
       </div>
     </div>
   );
