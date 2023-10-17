@@ -4,7 +4,7 @@ import { Member, Profile, MemberRole } from "@prisma/client";
 import { ActionTooltip } from "../action-tooltip";
 import { UserAvatar } from "../user-avatar";
 //@ts-ignore
-import { ShieldCheck, ShieldAlert, FileIcon } from "lucide-react";
+import { ShieldCheck, ShieldAlert, FileIcon, Edit, Trash } from "lucide-react";
 import Image from "@/node_modules/next/image";
 import { useState } from "react";
 import { cn } from "@/lib/utils";
@@ -104,18 +104,33 @@ export const ChatItem = ({
             </div>
           )}
           {!fileUrl && !!isEditing && (
-            <p className={cn("text-sm text-zinc-600 dark:text-zinc-300", deleted && "italic text-zinc-500 dark:text-zinc-400 text-xs mt-1")}>
-                {content}
-                {isUpdated && !deleted && (
-                    <span className="text-[10px] mx-2 text-zinc-500 dark:text-zinc-400">(edited)</span>
-                )}
+            <p
+              className={cn(
+                "text-sm text-zinc-600 dark:text-zinc-300",
+                deleted &&
+                  "italic text-zinc-500 dark:text-zinc-400 text-xs mt-1"
+              )}
+            >
+              {content}
+              {isUpdated && !deleted && (
+                <span className="text-[10px] mx-2 text-zinc-500 dark:text-zinc-400">
+                  (edited)
+                </span>
+              )}
             </p>
           )}
         </div>
       </div>
       {canDeleteMessage && (
         <div className="hidden group-hover:flex items-center gap-x-2 absolute p-1 -top-2 right-5 bg-white dark:bg-zinc-800 border rounded-sm">
-
+          {canEditMessage && (
+            <ActionTooltip label="Edit">
+              <Edit className="cursor-pointer ml-auto w-4 h-4 text-zinc-500 hover:text-zinc-600 dark:hover:text-zinc-300 transition" />
+            </ActionTooltip>
+          )}
+          <ActionTooltip label="Delete">
+            <Trash className="cursor-pointer ml-auto w-4 h-4 text-zinc-500 hover:text-zinc-600 dark:hover:text-zinc-300 transition" />
+          </ActionTooltip>
         </div>
       )}
     </div>
