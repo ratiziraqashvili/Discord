@@ -56,10 +56,10 @@ export const DeleteMessageModal = () => {
           </DialogDescription>
         </DialogHeader>
         <DialogFooter className="bg-gray-100 px-6 py-4">
-          <div className="flex items-center justify-between w-full">
+          <div className="flex items-center justify-between w-full">{/*@ts-ignore*/}
             <Button disabled={isLoading} onClick={onClose} variant="ghost">
               Cancel
-            </Button>
+            </Button>{/*@ts-ignore*/}
             <Button disabled={isLoading} variant="danger" onClick={onClick}>
               Confirm
             </Button>
