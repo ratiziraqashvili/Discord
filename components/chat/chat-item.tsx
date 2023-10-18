@@ -80,7 +80,7 @@ export const ChatItem = ({
       return
     }
 
-    router.push(`/server/${params?.serverId}/conversations/${member.id}`)
+    router.push(`/servers/${params?.serverId}/conversations/${member.id}`)
   }
 
   useEffect(() => {
