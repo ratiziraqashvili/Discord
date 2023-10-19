@@ -50,17 +50,6 @@ const roleIconMap = {
   ADMIN: <ShieldAlert className="h-4 w-4 text-rose-500" />,
 };
 
-type Member = {
-  role: string;
-  profileId: number;
-  id: string;
-  profile: {
-    imageUrl: string;
-    name: string;
-    email: string;
-  };
-};
-
 export const MembersModal = () => {
   const router = useRouter();
   const { onOpen, isOpen, onClose, type, data } = useModal();
@@ -124,7 +113,7 @@ export const MembersModal = () => {
           </DialogDescription>
         </DialogHeader>
         <ScrollArea className="mt-8 max-h-[420px] pr-6">
-          {server?.members?.map((member: Member) => (
+          {server?.members?.map((member: any) => (
             <div key={member.id} className="flex items-center gap-x-2 mb-6">
               <UserAvatar src={member.profile.imageUrl} />
               <div className="flex flex-col gap-y-1">
