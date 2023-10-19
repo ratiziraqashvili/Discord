@@ -44,7 +44,7 @@ export const InviteModal = () => {
     try {
       setIsLoading(true);
       const response = await axios.patch(
-        `/api/servers/${server.id}/invite-code`
+        `/api/servers/${server?.id}/invite-code`
       );
 
       onOpen("invite", { server: response.data });
@@ -81,6 +81,7 @@ export const InviteModal = () => {
           <Button
           onClick={onNew}
             disabled={isLoading}
+            {/*@ts-ignore*/}
             variant="link"
             size="sm"
             className="text-xs text-zinc-500 mt-4"
