@@ -81,7 +81,6 @@ export const InviteModal = () => {
           <Button
           onClick={onNew}
             disabled={isLoading}
-            {/*@ts-ignore*/}
             variant="link"
             size="sm"
             className="text-xs text-zinc-500 mt-4"
