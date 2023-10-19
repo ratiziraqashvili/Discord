@@ -80,7 +80,7 @@ export const CreateChannelModal = () => {
 
   const isLoading = form.formState.isSubmitting;
 
-  const onSubmit = async (values: z.infer<typeof formSchema>) => {
+  const onSubmit = async (values: { name: string; type: ChannelType | undefined; }) => {
     try {
       const url = qs.stringifyUrl({
         url: "/api/channels",
