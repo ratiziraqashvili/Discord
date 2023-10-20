@@ -30,6 +30,9 @@ interface Member {
     name: string;
   };
   role: MemberRole;
+  serverId: string;
+  createdAt: Date;
+  updatedAt: Date;
 }
 
 type IconMap = {
@@ -155,14 +158,14 @@ export const ServerSidebar = async ({ serverId }: ServerSidebarProps) => {
               label="Text Channels"
             />
             <div className="space-y-[2px]">
-            {textChannels.map((channel: any) => (
-              <ServerChannel
-                key={channel.id}
-                channel={channel }
-                role={role}
-                server={server}
-              />
-            ))}
+              {textChannels.map((channel: any) => (
+                <ServerChannel
+                  key={channel.id}
+                  channel={channel}
+                  role={role}
+                  server={server}
+                />
+              ))}
             </div>
           </div>
         )}
@@ -184,7 +187,7 @@ export const ServerSidebar = async ({ serverId }: ServerSidebarProps) => {
             ))}
           </div>
         )}
-         {!!videoChannels?.length && (
+        {!!videoChannels?.length && (
           <div className="mb-2">
             <ServerSection
               sectionType="channels"
