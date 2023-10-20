@@ -64,7 +64,7 @@ export async function GET( req: Request ) {
             });
         }
 
-        let nextCursor: string | null = null;
+        let nextCursor:string  = "";
 
         if(messages.length === MESSAGES_BATCH && messages[MESSAGES_BATCH - 1]){
             nextCursor = messages[MESSAGES_BATCH - 1].id
