@@ -66,7 +66,7 @@ export async function GET( req: Request ) {
 
         let nextCursor: string | null = null;
 
-        if(messages.length === MESSAGES_BATCH){
+        if(messages.length === MESSAGES_BATCH && messages[MESSAGES_BATCH - 1]){
             nextCursor = messages[MESSAGES_BATCH - 1].id
         }
         
