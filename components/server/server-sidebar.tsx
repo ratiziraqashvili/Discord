@@ -105,7 +105,7 @@ export const ServerSidebar = async ({ serverId }: ServerSidebarProps) => {
               {
                 label: "Text Channels",
                 type: "channel",
-                data: textChannels?.map((channel: Channel) => ({
+                data: textChannels?.map((channel: any) => ({
                   id: channel.id,
                   name: channel.name,
                   icon: iconMap[channel.type],
@@ -114,7 +114,7 @@ export const ServerSidebar = async ({ serverId }: ServerSidebarProps) => {
               {
                 label: "Voice Channels",
                 type: "channel",
-                data: audioChannels?.map((channel: Channel) => ({
+                data: audioChannels?.map((channel: any) => ({
                   id: channel.id,
                   name: channel.name,
                   icon: iconMap[channel.type],
@@ -123,7 +123,7 @@ export const ServerSidebar = async ({ serverId }: ServerSidebarProps) => {
               {
                 label: "Video Channels",
                 type: "channel",
-                data: videoChannels?.map((channel: Channel) => ({
+                data: videoChannels?.map((channel: any) => ({
                   id: channel.id,
                   name: channel.name,
                   icon: iconMap[channel.type],
@@ -132,7 +132,7 @@ export const ServerSidebar = async ({ serverId }: ServerSidebarProps) => {
               {
                 label: "Members",
                 type: "member",
-                data: members?.map((member: Member) => ({
+                data: members?.map((member: any) => ({
                   id: member.id,
                   name: member.profile.name,
                   icon: roleIconMap[member.role],
@@ -151,10 +151,10 @@ export const ServerSidebar = async ({ serverId }: ServerSidebarProps) => {
               label="Text Channels"
             />
             <div className="space-y-[2px]">
-            {textChannels.map((channel: Channel) => (
+            {textChannels.map((channel: any) => (
               <ServerChannel
                 key={channel.id}
-                channel={channel}
+                channel={channel }
                 role={role}
                 server={server}
               />
@@ -170,7 +170,7 @@ export const ServerSidebar = async ({ serverId }: ServerSidebarProps) => {
               role={role}
               label="Voice Channels"
             />
-            {audioChannels.map((channel: Channel) => (
+            {audioChannels.map((channel: any) => (
               <ServerChannel
                 key={channel.id}
                 channel={channel}
@@ -188,7 +188,7 @@ export const ServerSidebar = async ({ serverId }: ServerSidebarProps) => {
               role={role}
               label="Video Channels"
             />
-            {videoChannels.map((channel: Channel) => (
+            {videoChannels.map((channel: any) => (
               <ServerChannel
                 key={channel.id}
                 channel={channel}
@@ -206,7 +206,7 @@ export const ServerSidebar = async ({ serverId }: ServerSidebarProps) => {
               label="Members"
               server={server}
             />
-            {members.map((member: Member) => (
+            {members.map((member: any) => (
               <ServerMember key={member.id} member={member} server={server} />
             ))}
           </div>
