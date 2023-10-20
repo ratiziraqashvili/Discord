@@ -32,7 +32,11 @@ interface Member {
   role: MemberRole;
 }
 
-const iconMap = {
+type IconMap = {
+  [key in ChannelType]: JSX.Element;
+};
+
+const iconMap: IconMap = {
   [ChannelType.TEXT]: <Hash className="mr-2 h-4 w-4" />,
   [ChannelType.AUDIO]: <Mic className="mr-2 h-4 w-4" />,
   [ChannelType.VIDEO]: <Video className="mr-2 h-4 w-4" />,
