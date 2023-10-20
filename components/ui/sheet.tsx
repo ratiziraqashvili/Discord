@@ -1,8 +1,11 @@
 "use client"
 
 import * as React from "react"
+//@ts-ignore
 import * as SheetPrimitive from "@radix-ui/react-dialog"
+//@ts-ignore
 import { cva, type VariantProps } from "class-variance-authority"
+//@ts-ignore
 import { X } from "lucide-react"
 
 import { cn } from "@/lib/utils"
@@ -16,7 +19,7 @@ const SheetClose = SheetPrimitive.Close
 const SheetPortal = ({
   className,
   ...props
-}: SheetPrimitive.DialogPortalProps) => (
+}: SheetPrimitive.DialogPortalProps  & { className?: string }) => (
   <SheetPrimitive.Portal className={cn(className)} {...props} />
 )
 SheetPortal.displayName = SheetPrimitive.Portal.displayName
